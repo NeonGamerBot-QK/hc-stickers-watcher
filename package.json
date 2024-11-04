@@ -1,0 +1,13 @@
+{
+  "name": "hc-stickers-watcher",
+  "version": "0.0.1",
+  "description": "Watches for changes in the stickers folder and updates the stickers in the home assistant config",
+  "author": "Neon",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/web-api": "^7.7.0",
+    "better-sqlite3": "^11.5.0",
+    "dotenv": "^16.4.5"
+  }
+}
