@@ -25,7 +25,7 @@ function diffStartAndEnd(start, end) {
   )}\``;
 }
 function formatPercent(p) {
-  return p.toFixed(2) + "%";
+  return Math.round(p) + "%";
 }
 function chunk(arr, size) {
   let result = [];
