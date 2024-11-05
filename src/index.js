@@ -26,16 +26,31 @@ function diffStartAndEnd(start, end) {
 function formatPercent(p) {
     return p.toFixed(2) + "%";
 }
-
+function chunk(arr, size) {
+  let result = [];
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+  return result;
+}
 function calculatePercent(start, end) {
     return (end - start) / start * 100;
+}
+function getDiffOnProps(n1, n2) {
+if(n1 - n2 > 0) {
+    return `diff +${n1 - n2} \`${formatPercent(calculatePercent(n1, n2))}\``;
+} else if(n1 - n2 < 0) {
+    return `diff ${n1 - n2} \`${formatPercent(calculatePercent(n1, n2))}\``;
+}
 }
 function diff(oldObj, newObj) {
     if (oldObj === newObj) return;
     const changedProps = [];
     if (oldObj.name !== newObj.name) changedProps.push("name");
     if (oldObj.sku !== newObj.sku) changedProps.push("sku");
-    if (oldObj.image_url !== newObj.picture) changedProps.push("picture");
+    // for now dont check for image diff
+    // the urls seem to expire so i will have to implement buffer diff
+    // if (oldObj.image_url !== newObj.picture) changedProps.push("picture");
     if (oldObj.stock !== newObj.stock) changedProps.push("stock");
     if (oldObj.start !== newObj.start) changedProps.push("start");
     if (oldObj.end !== newObj.end) changedProps.push("end");
@@ -45,7 +60,8 @@ function diff(oldObj, newObj) {
             type: "section",
             text: {
                 type: "mrkdwn",
-                text: "Sticker updated!",
+                // use new name, 
+                text: `*Sticker: ${newObj.name} updated!*`,
             },
         });
     }
@@ -90,7 +106,7 @@ function diff(oldObj, newObj) {
                     text: {
                         type: "mrkdwn",
                         text:
-                            `Stock changed from *${oldObj.stock}* to *${newObj.stock}*`,
+                            `Stock changed from *${oldObj.stock}* to *${newObj.stock}* ${getDiffOnProps(oldObj.stock, newObj.stock)}`,
                     },
                 });
                 break;
@@ -100,7 +116,7 @@ function diff(oldObj, newObj) {
                     text: {
                         type: "mrkdwn",
                         text:
-                            `Start changed from *${oldObj.start}* to *${newObj.start}*`,
+                            `Start changed from *${oldObj.start}* to *${newObj.start}* ${getDiffOnProps(oldObj.start, newObj.start)}`,
                     },
                 });
                 break;
@@ -110,7 +126,7 @@ function diff(oldObj, newObj) {
                     text: {
                         type: "mrkdwn",
                         text:
-                            `End changed from *${oldObj.end}* to *${newObj.end}*`,
+                            `End changed from *${oldObj.end}* to *${newObj.end}* ${getDiffOnProps(oldObj.end, newObj.end)}`,
                     },
                 });
                 break;
@@ -127,17 +143,17 @@ function diff(oldObj, newObj) {
             },
         });
     }
-    if(blocks.length > 0) {
-        blocks.push({
-            type: "context",
-            elements: [
-                {
-                    type: "mrkdwn",
-                    text: `Hc Stickers Watcher - Commit  ${gcsh}`,
-                },
-            ],
-        });
-    }
+    // if(blocks.length > 0) {
+    //     blocks.push({
+    //         type: "context",
+    //         elements: [
+    //             {
+    //                 type: "mrkdwn",
+    //                 text: `Hc Stickers Watcher - Commit  ${gcsh}`,
+    //             },
+    //         ],
+    //     });
+    // }
     return blocks;
 }
 
@@ -146,7 +162,14 @@ async function run() {
      * @returns {Promise<any[]>}
      */
     const stickers = await getStickers();
-    stickers.forEach((s) => {
+    const total_blocks = [{
+        type: "header",
+        text: {
+            type: "plain_text",
+            text: "Upaded Stickers",
+        },
+    }]
+for (const s of stickers) {
         // try finding it in the db
         const r = db.prepare("SELECT * FROM stickers WHERE sku = ?").get(s.sku);
         if (r) {
@@ -160,9 +183,13 @@ async function run() {
             const blocks = diff(r, s);
             console.log(blocks)
             if (blocks.length > 0) {
-                client.chat.postMessage({
-                    channel: process.env.SLACK_CHANNEL,
-                    "blocks": blocks,
+                // client.chat.postMessage({
+                //     channel: process.env.SLACK_CHANNEL,
+                //     "blocks": blocks,
+                // })
+                total_blocks.push(...blocks)
+                total_blocks.push({ 
+                    type: "divider"
                 })
                 // .then(() => {
                 //     if (process.env.PROD) {
@@ -216,8 +243,37 @@ async function run() {
                 }
             });
         }
-    });
+    }
+if(total_blocks.length > 1) {
+    total_blocks.push({
+                type: "context",
+                elements: [
+                    {
+                        type: "mrkdwn",
+                        text: `Hc Stickers Watcher - Commit  ${gcsh}`,
+                    },
+                ],
+            });
+  if(total_blocks.length >= 50) {
+    // split into chunks
+    const chunks = chunk(total_blocks, 50)
+    for(const chunk of chunks) {
+      client.chat.postMessage({
+        channel: process.env.SLACK_CHANNEL,
+        "blocks": chunk,
+      })
+    }
+  } else {
+    client.chat.postMessage({
+        channel: process.env.SLACK_CHANNEL,
+        "blocks": total_blocks,
+    })
+  }
+            
+        }
+
+
 }
 
-setInterval(run, 1000 * 60 * 60);
+setInterval(run, 1000 * 60 * 30);
 run();

@@ -1,0 +1,11 @@
+- [ ] setup db migrations
+- [ ] organize the code
+- [ ] ship on high seas
+- [ ] add a read me
+- [ ] add a license
+- [ ] add a proper tests file for extra funcs
+- [ ] Ts maybe??
+- [ ] setup how to deploy to prod
+- [ ] setup gh actions
+- [ ] setup prod env 
+- [ ] dump logs in #neongamer-spam
