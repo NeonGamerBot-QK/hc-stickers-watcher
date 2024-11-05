@@ -7,5 +7,5 @@
 - [ ] Ts maybe??
 - [ ] setup how to deploy to prod
 - [ ] setup gh actions
-- [ ] setup prod env 
+- [ ] setup prod env
 - [ ] dump logs in #neongamer-spam
