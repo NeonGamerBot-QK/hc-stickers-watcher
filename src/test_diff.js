@@ -10,5 +10,5 @@ console.log(r);
 if (r) {
     db.prepare(
         "UPDATE stickers SET name = ?, image_url = ?, stock = ?, start = ?, end = ? WHERE sku = ?",
-    ).run(r.name, r.image_url, r.stock - 1, r.start, r.end, r.sku);
+    ).run(r.name + ` Touched`, r.image_url, r.stock - 1, r.start - 15, r.end, r.sku);
 }
