@@ -121,5 +121,5 @@ async function run() {
 }
 cron.schedule("0 */2 * * *", () => {
   run();
-})
+});
 run();
