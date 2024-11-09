@@ -12,9 +12,9 @@ jobs:
           node-version: 20
       - run: npm install
       - run: npm run test:ci
-      - uses: dorny/test-reporter@v1
-        with:
-          artifact: test-results # artifact name
-          name: JEST Tests # Name of the check run which will be created
-          path: "reports/*.xml" # Path to test results (inside artifact .zip)
-          reporter: jest-junit # Format of test results
+    #   - uses: dorny/test-reporter@v1
+    #     with:
+    #       artifact: test-results # artifact name
+    #       name: JEST Tests # Name of the check run which will be created
+    #       path: "reports/*.xml" # Path to test results (inside artifact .zip)
+    #       reporter: jest-junit # Format of test results
