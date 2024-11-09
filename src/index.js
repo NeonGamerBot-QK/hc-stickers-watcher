@@ -6,7 +6,17 @@ const cron = require("node-cron");
 const slackwebapi = require("@slack/web-api");
 const client = new slackwebapi.WebClient(process.env.SLACK_TOKEN);
 db.pragma("journal_mode = WAL");
-
+const {
+  setupDB,
+  getStickers,
+  diffStartAndEnd,
+  formatPercent,
+  chunk,
+  calculatePercent,
+  getDiffOnProps,
+  diff,
+} = require("../src/utils");
+setupDB(db)
 // get git short hash via child_process
 const gcsh = require("child_process")
   .execSync('git rev-parse --short HEAD || echo "dev" ')
