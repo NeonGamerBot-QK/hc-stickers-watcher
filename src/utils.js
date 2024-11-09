@@ -54,7 +54,7 @@ function diff(oldObj, newObj) {
       text: {
         type: "mrkdwn",
         // use new name,
-        text: `*Sticker: ${newObj.name} updated!*`,
+        text: `*<https://saahild.com/hc-stickers/#${newObj.sku}|Sticker: ${newObj.name} updated!>*`,
       },
     });
   }
