@@ -1,27 +1,26 @@
 name: Tests
-on: 
-    push:
+on:
+  push:
 
-jobs: 
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: 20
-                  cache: 'npm'
-                  cache-dependency-path: '**/package-lock.json'
-            - run: npm install
-            - run: npm test
-    report:
-     runs-on: ubuntu-latest
-     steps:
-     - uses: dorny/test-reporter@v1
-       with:
-        artifact: test-results            # artifact name
-        name: JEST Tests                  # Name of the check run which will be created
-        path: '*.xml'                     # Path to test results (inside artifact .zip)
-        reporter: jest-junit              # Format of test results
-
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+      - run: npm install
+      - run: npm test
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dorny/test-reporter@v1
+        with:
+          artifact: test-results # artifact name
+          name: JEST Tests # Name of the check run which will be created
+          path: "*.xml" # Path to test results (inside artifact .zip)
+          reporter: jest-junit # Format of test results
 
