@@ -1,7 +1,7 @@
 - [x] setup db migrations
 - [x] organize the code
 - [ ] ship on high seas
-- [ ] add a read me
+- [x] add a read me
 - [x] add a license
 - [x] add a proper tests file for extra funcs
 - [ ] ~~Ts maybe??~~ not happening becuase TS on prod takes extra work, maybe later
