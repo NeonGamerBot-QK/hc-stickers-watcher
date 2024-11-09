@@ -16,7 +16,7 @@ const {
   getDiffOnProps,
   diff,
 } = require("../src/utils");
-setupDB(db)
+setupDB(db);
 // get git short hash via child_process
 const gcsh = require("child_process")
   .execSync('git rev-parse --short HEAD || echo "dev" ')
@@ -25,9 +25,9 @@ const gcsh = require("child_process")
 async function log(msg) {
   console.log(msg);
   client.chat.postMessage({
-channel: "C07LGLUTNH2",
-text: `From hackclub stickers instance: \n\`\`\`${new String(msg).toString()}\`\`\``    
-  })
+    channel: "C07LGLUTNH2",
+    text: `From hackclub stickers instance: \n\`\`\`${new String(msg).toString()}\`\`\``,
+  });
 }
 async function run() {
   /**
@@ -139,10 +139,10 @@ cron.schedule("0 */2 * * *", () => {
   run();
 });
 run();
-log(`Started Hackclub Stickers Watcher - (not on main zeon instance)`)
-process.on('uncaughtException', function (err) {
-  log(err.stack || err.message)
-})
-process.on('unhandledRejection', function (err) {
-  log(err.stack || err.message)
-})
+log(`Started Hackclub Stickers Watcher - (not on main zeon instance)`);
+process.on("uncaughtException", function (err) {
+  log(err.stack || err.message);
+});
+process.on("unhandledRejection", function (err) {
+  log(err.stack || err.message);
+});
