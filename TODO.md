@@ -1,11 +1,14 @@
 - [x] setup db migrations
 - [x] organize the code
-- [ ] ship on high seas
+- [x] ship on high seas
 - [x] add a read me
 - [x] add a license
 - [x] add a proper tests file for extra funcs
-- [ ] ~~Ts maybe??~~ not happening becuase TS on prod takes extra work, maybe later
-- [ ] setup how to deploy to prod
+- [] ~~Ts maybe??~~ not happening becuase TS on prod takes extra work, ~~maybe later~~ later is now
+- [x] setup how to deploy to prod
 - [x] setup gh actions
-- [ ] setup prod env
+- [x] setup prod env
 - [x] dump logs in #neongamer-spam
+- [ ] make new stickers be sent last
+- [ ] ping in sorted order
+- [ ] Fix typos
